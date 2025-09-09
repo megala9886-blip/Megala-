@@ -1,0 +1,71 @@
+// Filter projects by category
+const projectGrid = document.querySelector('.project-grid');
+const filterButtons = document.querySelectorAll('.filter-button');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const filterValue = button.getAttribute('data-filter');
+        const projects = projectGrid.children;
+
+        Array.from(projects).forEach(project => {
+            if (project.classList.contains(filterValue) || filterValue === 'all') {
+                project.style.display = 'block';
+            } else {
+                project.style.display = 'none';
+            }
+        });
+    });
+});
+
+// Add event listener to project cards for modal popup
+const projectCards = document.querySelectorAll('.project');
+
+projectCards.forEach(card => {
+    card.addEventListener('click', () => {
+        const projectId = card.getAttribute('data-project-id');
+        const modal = document.getElementById('project-modal');
+        const modalContent = modal.querySelector('.modal-content');
+
+        // Fetch project details from API or database
+        // For demonstration purposes, we'll use a mock project object
+        const project = {
+            id: projectId,
+            title: 'Project Title',
+            description: 'Project description',
+            images: ['image1.jpg', 'image2.jpg']
+        };
+
+        modalContent.innerHTML = `
+            <h2>${project.title}</h2>
+            <p>${project.description}</p>
+            <div class="project-images">
+                ${project.images.map(image => `<img src="${image}" alt="Project Image">`).join('')}
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    });
+});
+
+// Close modal popup
+const modalCloseButton = document.querySelector('.modal-close');
+
+modalCloseButton.addEventListener('click', () => {
+    const modal = document.getElementById('project-modal');
+    modal.style.display = 'none';
+});
+
+// Smooth scrolling for navigation links
+const navLinks = document.querySelectorAll('header nav a');
+
+navLinks.forEach(link => {
+    link.addEventListener('click', event => {
+        event.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+
+        targetElement.scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
